@@ -360,7 +360,7 @@
         const svg = document.getElementById('svg-overlay');
         if (svg) {
             // Remove all custom paths (keep defs)
-            const paths = svg.querySelectorAll('path:not(defs path)');
+            const paths = Array.from(svg.querySelectorAll('path')).filter(p => !p.closest('defs'));
             paths.forEach(p => p.remove());
         }
     }
@@ -370,7 +370,7 @@
         if (!svg) return;
         
         // Remove existing paths first
-        const paths = svg.querySelectorAll('path:not(defs path)');
+        const paths = Array.from(svg.querySelectorAll('path')).filter(p => !p.closest('defs'));
         paths.forEach(p => p.remove());
 
         const svgRect = svg.getBoundingClientRect();

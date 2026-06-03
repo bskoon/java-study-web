@@ -114,7 +114,7 @@
         // Clear global arrow overlays
         const svg = document.getElementById('svg-overlay');
         if (svg) {
-            const paths = svg.querySelectorAll('path:not(defs path)');
+            const paths = Array.from(svg.querySelectorAll('path')).filter(p => !p.closest('defs'));
             paths.forEach(p => p.remove());
         }
 
