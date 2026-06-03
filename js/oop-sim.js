@@ -1,6 +1,7 @@
 (function() {
-    // Namespace definition
-    window.OopSim = {
+    try {
+        // Namespace definition
+        window.OopSim = {
         init: init,
         reset: reset,
         handleResize: handleResize,
@@ -416,5 +417,8 @@
         if (arrowsToDraw.length > 0) {
             drawAllArrows();
         }
+    }
+    } catch (e) {
+        alert("oop-sim.js execution failed: " + e.message + "\nStack: " + e.stack);
     }
 })();

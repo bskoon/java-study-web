@@ -1,6 +1,7 @@
 (function() {
-    // Namespace definition
-    window.JvmMem = {
+    try {
+        // Namespace definition
+        window.JvmMem = {
         init: init,
         reset: reset,
         switchThread: switchThread,
@@ -272,5 +273,8 @@
         }
         
         explanationBox.innerHTML = html;
+    }
+    } catch (e) {
+        alert("jvm-mem.js execution failed: " + e.message + "\nStack: " + e.stack);
     }
 })();

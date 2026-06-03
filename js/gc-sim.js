@@ -1,6 +1,7 @@
 (function() {
-    // Namespace definition
-    window.GcSim = {
+    try {
+        // Namespace definition
+        window.GcSim = {
         init: init,
         reset: reset,
         handleResize: handleResize,
@@ -511,5 +512,8 @@
         if (links.length > 0) {
             drawGcArrows();
         }
+    }
+    } catch (e) {
+        alert("gc-sim.js execution failed: " + e.message + "\nStack: " + e.stack);
     }
 })();

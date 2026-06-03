@@ -1,11 +1,12 @@
 (function() {
-    // Root Application Namespace
-    window.App = {
-        init: init,
-        log: log,
-        clearLogs: clearLogs,
-        showPreDetail: showPreDetail
-    };
+    try {
+        // Root Application Namespace
+        window.App = {
+            init: init,
+            log: log,
+            clearLogs: clearLogs,
+            showPreDetail: showPreDetail
+        };
 
     // DOM Elements Cache
     let navButtons, consoleLogs;
@@ -205,4 +206,7 @@
         init();
     }
 
+    } catch (e) {
+        alert("app.js execution failed: " + e.message + "\nStack: " + e.stack);
+    }
 })();
