@@ -1,0 +1,1275 @@
+/* ==========================================================================
+   Java & JVM Interactive Playground - Dracula Theme Styles
+   ========================================================================== */
+
+/* 1. Reset and Variables */
+:root {
+    --bg: #282a36;
+    --bg-darker: #1e1f29;
+    --bg-lighter: #343746;
+    --current-line: #44475a;
+    --selection: #44475a;
+    --fg: #f8f8f2;
+    --fg-muted: #a9a9b3;
+    --comment: #6272a4;
+    
+    /* Dracula Accent Colors */
+    --cyan: #8be9fd;
+    --green: #50fa7b;
+    --orange: #ffb86c;
+    --pink: #ff79c6;
+    --purple: #bd93f9;
+    --red: #ff5555;
+    --yellow: #f1fa8c;
+    
+    --border-color: #44475a;
+    --border-radius: 8px;
+    --font-code: 'Fira Code', monospace;
+    --font-sans: 'Inter', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 2. Global Layout Structure */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* Header */
+.app-header {
+    background-color: var(--bg-darker);
+    border-bottom: 2px solid var(--border-color);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    z-index: 20;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-icon {
+    font-size: 24px;
+}
+
+.logo-area h1 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--fg);
+    letter-spacing: -0.5px;
+}
+
+/* Step Navigation */
+.step-nav {
+    display: flex;
+    gap: 8px;
+}
+
+.nav-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--fg-muted);
+    padding: 6px 14px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+}
+
+.nav-btn:hover {
+    color: var(--fg);
+    background-color: var(--current-line);
+}
+
+.nav-btn.active {
+    color: var(--fg);
+    background-color: var(--purple);
+    border-color: var(--purple);
+    font-weight: 600;
+}
+
+.step-badge {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+}
+
+/* Workspace */
+.app-workspace {
+    flex: 1;
+    position: relative;
+    background-color: var(--bg);
+    overflow: hidden;
+}
+
+.step-view {
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+
+.step-view.active {
+    display: block;
+}
+
+.view-layout {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+/* Left Sidebar Controls */
+.panel-left {
+    width: 360px;
+    background-color: var(--bg-darker);
+    border-right: 2px solid var(--border-color);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+    z-index: 15;
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--purple);
+    border-left: 3px solid var(--pink);
+    padding-left: 10px;
+}
+
+.instruction-box {
+    background-color: var(--bg-lighter);
+    padding: 12px;
+    border-radius: var(--border-radius);
+    font-size: 13.5px;
+    line-height: 1.5;
+    border-left: 3px solid var(--cyan);
+}
+
+.instruction-box p {
+    margin-bottom: 8px;
+}
+
+.instruction-box p:last-child {
+    margin-bottom: 0;
+}
+
+.highlight-text {
+    color: var(--cyan);
+    font-weight: 500;
+}
+
+.detail-display-box {
+    background-color: var(--bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 15px;
+    font-size: 13px;
+    line-height: 1.6;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.detail-display-box h3 {
+    color: var(--green);
+    margin-bottom: 10px;
+    font-size: 14.5px;
+}
+
+.detail-display-box ul {
+    margin-left: 18px;
+    margin-top: 8px;
+}
+
+.detail-display-box li {
+    margin-bottom: 6px;
+}
+
+.placeholder-msg {
+    color: var(--comment);
+    text-align: center;
+    padding-top: 40px;
+    font-style: italic;
+}
+
+/* Control Elements */
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.control-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fg-muted);
+}
+
+.app-select {
+    background-color: var(--bg);
+    border: 1px solid var(--border-color);
+    color: var(--fg);
+    padding: 8px;
+    border-radius: var(--border-radius);
+    outline: none;
+    font-family: inherit;
+    font-size: 13.5px;
+    cursor: pointer;
+}
+
+.app-select:focus {
+    border-color: var(--purple);
+}
+
+/* Action Buttons */
+.action-buttons-row {
+    display: flex;
+    gap: 8px;
+}
+
+.action-buttons-row.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.btn {
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: var(--border-radius);
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    text-align: center;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn-primary {
+    background-color: var(--purple);
+    color: var(--fg);
+}
+
+.btn-primary:hover {
+    background-color: #a375e8;
+}
+
+.btn-secondary {
+    background-color: var(--current-line);
+    color: var(--fg);
+    border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background-color: #555970;
+}
+
+.btn-danger {
+    background-color: var(--red);
+    color: var(--fg);
+}
+
+.btn-danger:hover {
+    background-color: #ff6e6e;
+}
+
+.explanation-box {
+    background-color: var(--bg-lighter);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 12px;
+    font-size: 13px;
+    color: var(--fg);
+    line-height: 1.5;
+    min-height: 100px;
+    max-height: 180px;
+    overflow-y: auto;
+}
+
+.explanation-box.success-alert {
+    border-left: 4px solid var(--green);
+}
+
+.explanation-box.warning-alert {
+    border-left: 4px solid var(--orange);
+}
+
+/* Visual Viewport (Right Panel) */
+.panel-right {
+    flex: 1;
+    position: relative;
+    padding: 20px;
+    overflow: auto;
+    background-color: var(--bg-darker);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.visual-container {
+    background-color: var(--bg);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    margin: 15px;
+    height: calc(100% - 30px);
+    width: calc(100% - 30px);
+    position: relative;
+    overflow: auto;
+}
+
+/* SVG Arrow overlay */
+#svg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* 3. STEP 0: Pre-requisites UI (Flowchart) */
+.flowchart-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 30px;
+    width: 100%;
+    max-width: 500px;
+}
+
+.flow-card {
+    background-color: var(--bg-darker);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 15px 25px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.flow-card:hover {
+    border-color: var(--purple);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(189, 147, 249, 0.15);
+}
+
+.flow-card.active {
+    border-color: var(--pink);
+    background-color: var(--bg-lighter);
+    box-shadow: 0 0 10px rgba(255, 121, 198, 0.25);
+}
+
+.card-icon {
+    font-size: 24px;
+}
+
+.card-title {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.card-sub {
+    font-size: 12px;
+    color: var(--comment);
+    margin-top: 2px;
+}
+
+.flow-arrow {
+    color: var(--comment);
+    font-family: var(--font-code);
+    font-size: 12px;
+    font-weight: bold;
+    animation: pulse 2s infinite;
+}
+
+/* JVM Inner Subsystem Diagram Box */
+.jvm-box {
+    border: 2px dashed var(--purple);
+    border-radius: 12px;
+    padding: 20px;
+    width: 100%;
+    background-color: rgba(189, 147, 249, 0.03);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.jvm-box:hover {
+    background-color: rgba(189, 147, 249, 0.06);
+    border-style: solid;
+}
+
+.jvm-box-title {
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--purple);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+
+.jvm-engines {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.engine-card {
+    flex: 1;
+    background-color: var(--bg-darker);
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.engine-card:hover {
+    border-color: var(--cyan);
+    background-color: var(--bg-lighter);
+}
+
+.engine-title {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--cyan);
+}
+
+.engine-desc {
+    font-size: 10px;
+    color: var(--comment);
+    margin-top: 4px;
+}
+
+.jvm-box-sub {
+    font-size: 11px;
+    color: var(--comment);
+    text-align: center;
+}
+
+/* 4. STEP 1: OOP & Reference Memory Layout */
+.code-playground-box {
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    background-color: var(--bg-darker);
+}
+
+.editor-header {
+    background-color: var(--bg-lighter);
+    padding: 8px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.badge {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.badge-java {
+    background-color: var(--orange);
+    color: var(--bg-darker);
+}
+
+.code-editor {
+    font-family: var(--font-code);
+    font-size: 12.5px;
+    line-height: 1.5;
+    padding: 15px;
+    color: var(--fg);
+    overflow-x: auto;
+    background-color: var(--bg-darker);
+}
+
+.memory-layout {
+    display: flex;
+    gap: 30px;
+    padding: 25px;
+    width: 100%;
+    height: 100%;
+    min-height: 480px;
+}
+
+.mem-region {
+    flex: 1;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    background-color: rgba(30, 31, 41, 0.3);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+.region-header {
+    background-color: var(--bg-darker);
+    padding: 10px 15px;
+    border-bottom: 2px solid var(--border-color);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--cyan);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.region-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    position: relative;
+}
+
+/* Stack Slot Specifics */
+.stack-slot-container {
+    align-items: center;
+}
+
+.stack-frame-block {
+    width: 100%;
+    border: 1px solid var(--purple);
+    border-radius: var(--border-radius);
+    background-color: rgba(189, 147, 249, 0.05);
+    margin-bottom: 10px;
+}
+
+.stack-frame-header {
+    padding: 6px 12px;
+    background-color: rgba(189, 147, 249, 0.15);
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--purple);
+    border-bottom: 1px solid var(--purple);
+}
+
+.stack-slot {
+    width: 100%;
+    background-color: var(--bg-darker);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.stack-slot.highlight {
+    border-color: var(--pink);
+    box-shadow: 0 0 8px rgba(255, 121, 198, 0.3);
+}
+
+.slot-var-name {
+    font-family: var(--font-code);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--yellow);
+}
+
+.slot-var-type {
+    font-size: 11px;
+    color: var(--comment);
+    margin-left: 8px;
+}
+
+.slot-value-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.slot-value-val {
+    font-family: var(--font-code);
+    font-size: 13px;
+    color: var(--fg);
+}
+
+/* Reference point dot */
+.ref-pointer-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--pink);
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 6px var(--pink);
+}
+
+/* Heap Objects */
+#oop-heap-objects {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 20px;
+}
+
+.heap-object {
+    background-color: var(--bg-darker);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    width: 190px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+    overflow: hidden;
+    transition: border-color 0.2s ease;
+}
+
+.heap-object.highlight {
+    border-color: var(--green);
+}
+
+.object-header {
+    background-color: var(--bg-lighter);
+    padding: 6px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.object-addr {
+    font-family: var(--font-code);
+    font-size: 10px;
+    color: var(--comment);
+}
+
+.object-type {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--green);
+}
+
+.object-body {
+    padding: 10px;
+    font-size: 12px;
+}
+
+.object-field {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-code);
+    margin-bottom: 4px;
+}
+
+.object-field:last-child {
+    margin-bottom: 0;
+}
+
+.field-name {
+    color: var(--cyan);
+}
+
+.field-val {
+    color: var(--orange);
+}
+
+/* Constant Pool */
+.constant-pool-box {
+    margin-top: auto;
+    border: 2px dashed var(--orange);
+    border-radius: var(--border-radius);
+    padding: 12px;
+    background-color: rgba(255, 184, 108, 0.02);
+}
+
+.pool-header {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+}
+
+.pool-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.pool-literal {
+    background-color: var(--bg-darker);
+    border: 1px solid var(--orange);
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-family: var(--font-code);
+    font-size: 12px;
+    color: var(--yellow);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    display: inline-block;
+}
+
+/* 5. STEP 2: JVM Runtime Data Areas Grid Layout */
+.jvm-grid-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 15px;
+    padding: 20px;
+    height: 100%;
+    width: 100%;
+}
+
+.jvm-grid-item {
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: rgba(30,31,41,0.25);
+    transition: all 0.3s ease;
+}
+
+.jvm-grid-item.shared {
+    border-color: rgba(189, 147, 249, 0.4); /* purple */
+}
+
+.jvm-grid-item.shared:hover {
+    border-color: var(--purple);
+}
+
+.jvm-grid-item.thread-specific {
+    border-color: rgba(255, 121, 198, 0.4); /* pink */
+}
+
+.jvm-grid-item.thread-specific:hover {
+    border-color: var(--pink);
+}
+
+.area-badge {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+.shared .area-badge {
+    background-color: var(--purple);
+    color: var(--bg-darker);
+}
+
+.thread-specific .area-badge {
+    background-color: var(--pink);
+    color: var(--bg-darker);
+}
+
+.area-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--fg);
+    margin-bottom: 6px;
+}
+
+.area-desc {
+    font-size: 11px;
+    color: var(--comment);
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.area-body {
+    flex: 1;
+    background-color: var(--bg-darker);
+    border-radius: var(--border-radius);
+    padding: 10px;
+    overflow-y: auto;
+    min-height: 100px;
+}
+
+/* Method Area Details */
+.class-meta {
+    background-color: var(--bg-lighter);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 6px 10px;
+    margin-bottom: 6px;
+    font-family: var(--font-code);
+    font-size: 11px;
+    color: var(--cyan);
+}
+
+/* Heap Mock Details */
+.heap-node-mock {
+    background-color: var(--bg-lighter);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 6px 10px;
+    margin-bottom: 6px;
+    font-family: var(--font-code);
+    font-size: 11px;
+    color: var(--green);
+    display: inline-block;
+    margin-right: 6px;
+}
+
+/* Thread Specifics Styles */
+.thread-selector-row {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+}
+
+.btn-thread {
+    flex: 1;
+    background-color: var(--bg-darker);
+    border: 1px solid var(--border-color);
+    color: var(--fg-muted);
+    padding: 8px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 12px;
+    transition: all 0.2s ease;
+}
+
+.btn-thread.active {
+    background-color: var(--pink);
+    color: var(--bg-darker);
+    border-color: var(--pink);
+}
+
+/* PC Register */
+.text-cyan {
+    color: var(--cyan);
+}
+
+.text-dim {
+    color: var(--comment);
+}
+
+.font-mono {
+    font-family: var(--font-code);
+}
+
+/* JVM Frames */
+.jvm-frame {
+    border: 1px solid var(--pink);
+    border-radius: 6px;
+    background-color: rgba(255, 121, 198, 0.03);
+    margin-bottom: 8px;
+    overflow: hidden;
+}
+
+.jvm-frame-header {
+    background-color: rgba(255, 121, 198, 0.15);
+    padding: 4px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--pink);
+    display: flex;
+    justify-content: space-between;
+}
+
+.jvm-frame-body {
+    padding: 8px;
+    font-size: 11px;
+}
+
+.jvm-frame-local {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-code);
+    margin-bottom: 2px;
+}
+
+.jvm-frame-local:last-child {
+    margin-bottom: 0;
+}
+
+/* Grid Layout Spans */
+#jvm-method-area {
+    grid-column: 1 / 2;
+}
+
+#jvm-heap-area {
+    grid-column: 2 / 3;
+}
+
+#jvm-stack-area {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+}
+
+#jvm-pc-area {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    height: calc(50% - 7px);
+}
+
+#jvm-native-area {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    align-self: end;
+    height: calc(50% - 7px);
+}
+
+/* 6. STEP 3: GC Simulator Layout */
+.gc-heap-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 15px;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
+
+/* Roots list */
+.gc-stack-roots-box {
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-darker);
+    border-radius: var(--border-radius);
+    padding: 10px;
+}
+
+.roots-header {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--cyan);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.roots-body {
+    display: flex;
+    gap: 10px;
+}
+
+.root-node {
+    background-color: var(--bg-lighter);
+    border: 1px solid var(--cyan);
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-family: var(--font-code);
+    font-size: 12px;
+    color: var(--cyan);
+    cursor: default;
+    position: relative;
+}
+
+/* Generational layout */
+.gc-generational-heap {
+    display: flex;
+    gap: 15px;
+    flex: 1;
+    min-height: 380px;
+}
+
+.gc-generation {
+    flex: 1;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    background-color: rgba(30,31,41,0.2);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.gen-header {
+    background-color: var(--bg-darker);
+    padding: 8px 12px;
+    border-bottom: 1.5px solid var(--border-color);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--purple);
+    text-transform: uppercase;
+}
+
+#gc-young-gen {
+    flex: 2;
+    border-color: rgba(80, 250, 123, 0.3); /* green border tint */
+}
+
+#gc-young-gen .gen-header {
+    color: var(--green);
+}
+
+#gc-old-gen {
+    flex: 1;
+    border-color: rgba(255, 184, 108, 0.3); /* orange border tint */
+}
+
+#gc-old-gen .gen-header {
+    color: var(--orange);
+}
+
+.gen-content-wrapper {
+    display: flex;
+    flex: 1;
+    height: 100%;
+}
+
+.gc-region {
+    flex: 2;
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+
+.gc-region-survivor-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.gc-region-survivor-col .gc-region {
+    flex: 1;
+    border-right: none;
+}
+
+.gc-region-survivor-col .gc-region:first-child {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.gc-region-header {
+    background-color: rgba(30, 31, 41, 0.5);
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    padding: 4px;
+    border-bottom: 1px dashed var(--border-color);
+    color: var(--fg-muted);
+}
+
+.gc-region-body {
+    flex: 1;
+    padding: 10px;
+    position: relative;
+}
+
+/* Generational containers */
+.gc-node-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 12px;
+    overflow-y: auto;
+    transition: all 0.3s ease;
+}
+
+/* GC Node Elements */
+.gc-node {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--bg-darker);
+    border: 2px solid var(--fg-muted);
+    color: var(--fg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    font-family: var(--font-code);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    user-select: none;
+    transition: border-color 0.4s, background-color 0.4s, transform 0.4s;
+}
+
+/* FLIP animation transition class */
+.gc-node-moving {
+    transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    z-index: 100;
+}
+
+.gc-node-id {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.gc-node-age {
+    font-size: 9px;
+    background-color: var(--bg-lighter);
+    color: var(--yellow);
+    border-radius: 6px;
+    padding: 1px 4px;
+    margin-top: 2px;
+}
+
+/* GC Node States */
+.gc-node.marked-alive {
+    border-color: var(--green);
+    background-color: rgba(80, 250, 195, 0.08);
+    box-shadow: 0 0 10px rgba(80, 250, 123, 0.35);
+}
+
+.gc-node.marked-dead {
+    border-color: var(--red);
+    background-color: rgba(255, 85, 85, 0.05);
+    box-shadow: 0 0 10px rgba(255, 85, 85, 0.25);
+}
+
+.gc-node.disconnect-mode {
+    cursor: pointer;
+}
+
+.gc-node.disconnect-mode:hover {
+    border-color: var(--red);
+    transform: scale(1.05);
+    background-color: rgba(255, 85, 85, 0.1);
+}
+
+/* Unreachable node indication during marking phase */
+.gc-node.unreachable {
+    opacity: 0.5;
+    border-style: dotted;
+}
+
+/* Disconnect mode cursor override for simulator */
+.btn-disconnect-mode.active {
+    background-color: var(--red);
+    color: var(--fg);
+    box-shadow: 0 0 8px rgba(255, 85, 85, 0.4);
+}
+
+/* Sweeping fade animation */
+@keyframes sweep-fade-out {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.4);
+    }
+}
+
+.gc-node.sweeping {
+    animation: sweep-fade-out 0.6s forwards;
+}
+
+/* 7. Bottom Console Log */
+.app-console {
+    height: 140px;
+    background-color: var(--bg-darker);
+    border-top: 2px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    z-index: 20;
+}
+
+.console-header {
+    background-color: var(--bg-lighter);
+    padding: 6px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.console-title {
+    font-family: var(--font-code);
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--comment);
+}
+
+.btn-console-clear {
+    background: transparent;
+    border: none;
+    color: var(--comment);
+    cursor: pointer;
+    font-size: 11px;
+    font-family: inherit;
+    font-weight: 500;
+}
+
+.btn-console-clear:hover {
+    color: var(--fg);
+}
+
+.console-body {
+    flex: 1;
+    padding: 10px 20px;
+    font-family: var(--font-code);
+    font-size: 12px;
+    line-height: 1.5;
+    overflow-y: auto;
+    background-color: #181a20;
+}
+
+.log-line {
+    margin-bottom: 4px;
+}
+
+.log-line.info {
+    color: var(--fg-muted);
+}
+
+.log-line.success {
+    color: var(--green);
+}
+
+.log-line.warning {
+    color: var(--orange);
+}
+
+.log-line.danger {
+    color: var(--red);
+}
+
+.log-line.system {
+    color: var(--cyan);
+}
+
+/* Animations */
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.6;
+    }
+}

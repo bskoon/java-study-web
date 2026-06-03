@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java & JVM Interactive Playground</title>
+    <!-- Google Fonts for Modern Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dracula-theme">
+    <!-- SVG overlay for drawing memory pointer lines/arrows across simulations -->
+    <svg id="svg-overlay">
+        <defs>
+            <!-- Marker for reference arrows -->
+            <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#ff79c6" />
+            </marker>
+            <marker id="arrow-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#50fa7b" />
+            </marker>
+            <marker id="arrow-cyan" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#8be9fd" />
+            </marker>
+        </defs>
+    </svg>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-area">
+                <span class="logo-icon">☕</span>
+                <h1>Java & JVM Interactive Playground</h1>
+            </div>
+            <!-- Step Navigation Tabs -->
+            <nav class="step-nav" id="step-nav">
+                <button class="nav-btn active" data-step="0">
+                    <span class="step-badge">Step 0</span> Pre-requisites
+                </button>
+                <button class="nav-btn" data-step="1">
+                    <span class="step-badge">Step 1</span> OOP & Reference
+                </button>
+                <button class="nav-btn" data-step="2">
+                    <span class="step-badge">Step 2</span> JVM Memory Map
+                </button>
+                <button class="nav-btn" data-step="3">
+                    <span class="step-badge">Step 3</span> Garbage Collection
+                </button>
+            </nav>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="app-workspace">
+
+            <!-- STEP 0: Pre-requisites (JVM Basics) -->
+            <section id="view-step-0" class="step-view active">
+                <div class="view-layout">
+                    <!-- Left: Educational Content -->
+                    <div class="panel-left">
+                        <div class="section-title">☕ Java 컴파일 및 실행 메커니즘</div>
+                        <div class="instruction-box">
+                            <p>Java 소스 파일(`.java`)이 작성되어 기계에서 최종 실행되기까지의 전체 흐름을 시각적으로 학습해 보세요.</p>
+                            <p class="highlight-text">우측의 다이어그램에서 흐름별 단계를 클릭하면 상세한 작동 원리를 확인할 수 있습니다.</p>
+                        </div>
+                        <div class="detail-display-box" id="pre-detail-box">
+                            <div class="placeholder-msg">다이어그램의 단계를 클릭하여 상세 아키텍처를 학습하세요.</div>
+                        </div>
+                    </div>
+                    <!-- Right: Interactive Flowchart -->
+                    <div class="panel-right visual-container">
+                        <div class="flowchart-wrapper">
+                            <!-- Flow Card 1: Java Source File -->
+                            <div class="flow-card active" id="flow-source" onclick="window.App.showPreDetail('source')">
+                                <div class="card-icon">📄</div>
+                                <div class="card-title">Java 소스 코드</div>
+                                <div class="card-sub">HelloWorld.java</div>
+                            </div>
+                            <div class="flow-arrow">▼ javac (컴파일러)</div>
+                            <!-- Flow Card 2: Java Bytecode -->
+                            <div class="flow-card" id="flow-bytecode" onclick="window.App.showPreDetail('bytecode')">
+                                <div class="card-icon">⚙️</div>
+                                <div class="card-title">JVM 바이트코드</div>
+                                <div class="card-sub">HelloWorld.class</div>
+                            </div>
+                            <div class="flow-arrow">▼ JVM 클래스 로더 로딩</div>
+                            <!-- Flow Card 3: JVM Core & Execution Engine -->
+                            <div class="jvm-box" id="flow-jvm" onclick="window.App.showPreDetail('jvm')">
+                                <div class="jvm-box-title">JVM (Java Virtual Machine)</div>
+                                <div class="jvm-engines">
+                                    <div class="engine-card" id="engine-interpreter" onclick="event.stopPropagation(); window.App.showPreDetail('interpreter')">
+                                        <div class="engine-title">인터프리터</div>
+                                        <div class="engine-desc">한 줄씩 기계어로 번역</div>
+                                    </div>
+                                    <div class="engine-card" id="engine-jit" onclick="event.stopPropagation(); window.App.showPreDetail('jit')">
+                                        <div class="engine-title">JIT 컴파일러</div>
+                                        <div class="engine-desc">자주 실행되는 코드를 고속 컴파일</div>
+                                    </div>
+                                </div>
+                                <div class="jvm-box-sub">OS에 독립적인 실행 환경 보장</div>
+                            </div>
+                            <div class="flow-arrow">▼ 기계어(Machine Code) 변환</div>
+                            <!-- Flow Card 4: Hardware Platform -->
+                            <div class="flow-card" id="flow-hardware" onclick="window.App.showPreDetail('hardware')">
+                                <div class="card-icon">💻</div>
+                                <div class="card-title">운영체제 및 하드웨어</div>
+                                <div class="card-sub">Windows / macOS / Linux</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- STEP 1: OOP & Reference -->
+            <section id="view-step-1" class="step-view">
+                <div class="view-layout">
+                    <!-- Left: Playground & Presets -->
+                    <div class="panel-left">
+                        <div class="section-title">💡 Java OOP & Reference 시뮬레이터</div>
+                        <div class="control-group">
+                            <label for="oop-preset-select">코드 프리셋 선택</label>
+                            <select id="oop-preset-select" class="app-select">
+                                <option value="polymorphism">다형성 (Parent p = new Child())</option>
+                                <option value="string-literal">String literal 선언 (s1 == s2)</option>
+                                <option value="string-object">String new 객체 선언 (s1 != s2)</option>
+                                <option value="value-vs-ref">기본형 vs 참조형 데이터</option>
+                            </select>
+                        </div>
+                        <div class="code-playground-box">
+                            <div class="editor-header">
+                                <span>Java Source Preview</span>
+                                <span class="badge badge-java">Java</span>
+                            </div>
+                            <pre class="code-editor" id="oop-code-display">// 코드 프리셋을 선택하면 소스코드가 표시됩니다.</pre>
+                        </div>
+                        <div class="action-buttons-row">
+                            <button class="btn btn-secondary" id="btn-oop-step">한 단계 실행 (Step Into)</button>
+                            <button class="btn btn-primary" id="btn-oop-run">전체 실행 (Run)</button>
+                            <button class="btn btn-danger" id="btn-oop-reset">초기화 (Reset)</button>
+                        </div>
+                        <div class="explanation-box" id="oop-explanation">
+                            코드에 대한 메모리 바인딩 설명이 여기에 나타납니다.
+                        </div>
+                    </div>
+                    <!-- Right: Stack & Heap Visualizer -->
+                    <div class="panel-right visual-container" id="oop-memory-container">
+                        <div class="memory-layout">
+                            <!-- Stack Frame -->
+                            <div class="mem-region" id="oop-stack-region">
+                                <div class="region-header">JVM Stack (로컬 변수)</div>
+                                <div class="region-content stack-slot-container" id="oop-stack-slots">
+                                    <!-- Dynamic stack frames/variables go here -->
+                                </div>
+                            </div>
+                            <!-- Heap Space -->
+                            <div class="mem-region" id="oop-heap-region">
+                                <div class="region-header">JVM Heap Area</div>
+                                <div class="region-content" id="oop-heap-objects">
+                                    <!-- Dynamic Heap objects go here -->
+                                </div>
+                                <!-- Inside Heap: String Constant Pool -->
+                                <div class="constant-pool-box" id="string-pool-box">
+                                    <div class="pool-header">String Constant Pool (문자열 상수 풀)</div>
+                                    <div class="pool-content" id="oop-constant-pool">
+                                        <!-- String Pool literals go here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- STEP 2: JVM Memory Map -->
+            <section id="view-step-2" class="step-view">
+                <div class="view-layout">
+                    <!-- Left: Control Simulator -->
+                    <div class="panel-left">
+                        <div class="section-title">🧠 JVM Runtime Data Area 인터랙티브 맵</div>
+                        <div class="instruction-box">
+                            <p>JVM의 메모리 영역은 <strong>모든 스레드가 공유하는 영역(Method, Heap)</strong>과 <strong>각 스레드 고유의 영역(Stack, PC, Native Stack)</strong>으로 나뉩니다.</p>
+                        </div>
+                        <div class="thread-selector-row">
+                            <button class="btn-thread active" id="btn-thread-1">스레드 1 (Thread-1)</button>
+                            <button class="btn-thread" id="btn-thread-2">스레드 2 (Thread-2)</button>
+                        </div>
+                        <div class="action-buttons-row font-sm">
+                            <button class="btn btn-secondary" id="btn-jvm-method-call">메서드 호출 시뮬레이션</button>
+                            <button class="btn btn-secondary" id="btn-jvm-method-exit">메서드 종료 (Return)</button>
+                            <button class="btn btn-danger" id="btn-jvm-reset">초기화</button>
+                        </div>
+                        <div class="explanation-box" id="jvm-explanation">
+                            현재 활성화된 스레드의 실행 흐름과 스택 프레임 상태를 추적합니다.
+                        </div>
+                    </div>
+                    <!-- Right: JVM Memory Map Grid -->
+                    <div class="panel-right visual-container">
+                        <div class="jvm-grid-layout">
+                            <!-- Shared Areas -->
+                            <div class="jvm-grid-item shared" id="jvm-method-area">
+                                <div class="area-badge">공유 영역</div>
+                                <div class="area-title">Method Area (메서드 영역)</div>
+                                <div class="area-desc">클래스 로더가 읽어들인 클래스 메타데이터, 상수풀, static 변수 등이 로드됩니다.</div>
+                                <div class="area-body" id="jvm-method-data">
+                                    <!-- Loaded classes -->
+                                    <div class="class-meta">class Main { ... }</div>
+                                    <div class="class-meta">class User { ... }</div>
+                                </div>
+                            </div>
+                            <div class="jvm-grid-item shared" id="jvm-heap-area">
+                                <div class="area-badge">공유 영역</div>
+                                <div class="area-title">Heap Area (힙 영역)</div>
+                                <div class="area-desc">런타임에 동적으로 생성된 인스턴스 객체들이 들어옵니다. GC가 주기적으로 수거합니다.</div>
+                                <div class="area-body" id="jvm-heap-data">
+                                    <div class="heap-node-mock">User@4a23 (age: 1)</div>
+                                    <div class="heap-node-mock">String@2f12 ("Hello")</div>
+                                </div>
+                            </div>
+                            <!-- Thread Specific Areas -->
+                            <div class="jvm-grid-item thread-specific" id="jvm-stack-area">
+                                <div class="area-badge" id="thread-area-badge">스레드 전용 (Thread-1)</div>
+                                <div class="area-title">JVM Stack (스택 영역)</div>
+                                <div class="area-desc">메서드 호출 시 생성되는 스택 프레임이 쌓이며, 지역 변수들이 관리됩니다.</div>
+                                <div class="area-body" id="jvm-stack-frames">
+                                    <!-- Stack frames dynamic -->
+                                </div>
+                            </div>
+                            <div class="jvm-grid-item thread-specific" id="jvm-pc-area">
+                                <div class="area-badge">스레드 전용 (Thread-1)</div>
+                                <div class="area-title">PC Register (프로그램 카운터)</div>
+                                <div class="area-desc">현재 스레드가 실행 중인 JVM 명령의 주소를 가리킵니다.</div>
+                                <div class="area-body font-mono text-cyan" id="jvm-pc-value">
+                                    PC: 0x00000000
+                                </div>
+                            </div>
+                            <div class="jvm-grid-item thread-specific" id="jvm-native-area">
+                                <div class="area-badge">스레드 전용 (Thread-1)</div>
+                                <div class="area-title">Native Method Stack</div>
+                                <div class="area-desc">C, C++ 등 기계어로 작성된 네이티브 라이브러리를 위한 스택입니다.</div>
+                                <div class="area-body font-mono text-dim" id="jvm-native-status">
+                                    [Idle]
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- STEP 3: Garbage Collection -->
+            <section id="view-step-3" class="step-view">
+                <div class="view-layout">
+                    <!-- Left: Control Box -->
+                    <div class="panel-left">
+                        <div class="section-title">🧹 GC (Garbage Collection) 시뮬레이터</div>
+                        <div class="instruction-box">
+                            <p>Heap 메모리를 세대로 구분(Young/Old)하여 불필요한 메모리를 수거하는 가비지 컬렉터의 동작을 관찰해 보세요.</p>
+                            <p class="font-sm text-dim">객체를 생성한 후 다른 객체나 Stack 참조를 끊고(Disconnect) 가비지 컬렉션을 동작시킬 수 있습니다.</p>
+                        </div>
+                        <div class="action-buttons-row flex-wrap">
+                            <button class="btn btn-secondary" id="btn-gc-create">객체 생성 (Create Object)</button>
+                            <button class="btn btn-secondary btn-disconnect-mode" id="btn-gc-disconnect">참조 끊기 (Disconnect)</button>
+                            <button class="btn btn-primary" id="btn-gc-minor">Minor GC 실행</button>
+                            <button class="btn btn-primary" id="btn-gc-major">Major GC 실행</button>
+                            <button class="btn btn-danger" id="btn-gc-reset">초기화 (Reset)</button>
+                        </div>
+                        <div class="explanation-box" id="gc-explanation">
+                            여기에 GC 상태 피드백이 표시됩니다.
+                        </div>
+                    </div>
+                    <!-- Right: Generational Heap Visualizer -->
+                    <div class="panel-right visual-container" id="gc-visual-container">
+                        <div class="gc-heap-layout">
+                            <!-- Root Set Reference Node in Stack -->
+                            <div class="gc-stack-roots-box">
+                                <div class="roots-header">Root References (Stack 변수들)</div>
+                                <div class="roots-body" id="gc-stack-roots">
+                                    <!-- Root references like local_ref1, local_ref2 -->
+                                    <div class="root-node" id="root-ref-1" data-root="1">rootVar1</div>
+                                    <div class="root-node" id="root-ref-2" data-root="2">rootVar2</div>
+                                </div>
+                            </div>
+                            <!-- Heap Sub-divided Zones -->
+                            <div class="gc-generational-heap">
+                                <!-- Young Generation -->
+                                <div class="gc-generation" id="gc-young-gen">
+                                    <div class="gen-header">Young Generation (Minor GC 범위)</div>
+                                    <div class="gen-content-wrapper">
+                                        <div class="gc-region" id="gc-eden">
+                                            <div class="gc-region-header">Eden Space</div>
+                                            <div class="gc-region-body gc-node-container" id="eden-space">
+                                                <!-- Dynamic nodes -->
+                                            </div>
+                                        </div>
+                                        <div class="gc-region-survivor-col">
+                                            <div class="gc-region" id="gc-s0">
+                                                <div class="gc-region-header">Survivor 0 (S0)</div>
+                                                <div class="gc-region-body gc-node-container" id="s0-space">
+                                                    <!-- Dynamic nodes -->
+                                                </div>
+                                            </div>
+                                            <div class="gc-region" id="gc-s1">
+                                                <div class="gc-region-header">Survivor 1 (S1)</div>
+                                                <div class="gc-region-body gc-node-container" id="s1-space">
+                                                    <!-- Dynamic nodes -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Old Generation -->
+                                <div class="gc-generation" id="gc-old-gen">
+                                    <div class="gen-header">Old Generation (Major/Full GC 범위)</div>
+                                    <div class="gc-region-body gc-node-container" id="old-space">
+                                        <!-- Dynamic nodes promoted -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Console / System Log Panel -->
+        <footer class="app-console">
+            <div class="console-header">
+                <span class="console-title">💻 System Execution Log</span>
+                <button class="btn-console-clear" onclick="window.App.clearLogs()">Clear</button>
+            </div>
+            <div class="console-body" id="console-logs">
+                <div class="log-line info">[System] Interactive Java/JVM Learning Platform initialized.</div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loaded Scripts (Using window object namespaces to prevent CORS errors on file://) -->
+    <script src="js/oop-sim.js"></script>
+    <script src="js/jvm-mem.js"></script>
+    <script src="js/gc-sim.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
