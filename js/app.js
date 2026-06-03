@@ -198,7 +198,11 @@
         }
     }
 
-    // Auto-bootstrap once DOM is ready
-    window.addEventListener('DOMContentLoaded', init);
+    // Auto-bootstrap once DOM is ready (or run immediately if already loaded)
+    if (document.readyState === 'loading') {
+        window.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
 
 })();
